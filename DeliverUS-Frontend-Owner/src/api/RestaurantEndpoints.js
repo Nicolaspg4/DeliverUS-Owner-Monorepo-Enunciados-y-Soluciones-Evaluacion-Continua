@@ -1,4 +1,4 @@
-import { get, post, put, destroy, patch } from './helpers/ApiRequestsHelper'
+import {get, post, put, destroy, patch} from './helpers/ApiRequestsHelper'
 function getAll () {
   return get('users/myrestaurants')
 }
@@ -18,6 +18,7 @@ function create (data) {
 function update (id, data) {
   return put(`restaurants/${id}`, data)
 }
+
 function toggleProductsSorting(id){
   return patch(`restaurantd/${id}/toggleProductsSorting`)
 }
