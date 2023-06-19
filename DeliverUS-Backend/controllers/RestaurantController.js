@@ -28,7 +28,7 @@ exports.indexOwner = async function (req, res) {
   try {
     const restaurants = await Restaurant.findAll(
       {
-        attributes: ['id', 'name', 'description', 'address', 'postalCode', 'url', 'shippingCosts', 'averageServiceMinutes', 'email', 'phone', 'logo', 'heroImage', 'status', 'restaurantCategoryId'],
+        attributes: ['id', 'name', 'description', 'address', 'postalCode', 'url', 'shippingCosts', 'averageServiceMinutes', 'email', 'phone', 'logo', 'heroImage', 'status', 'restaurantCategoryId', 'sortByPrice'],
         where: { userId: req.user.id }
       })
     res.json(restaurants)
@@ -58,7 +58,10 @@ exports.create = async function (req, res) {
 exports.show = async function (req, res) {
   // Only returns PUBLIC information of restaurants
   try {
-    const restaurant = await Restaurant.findByPk(req.params.restaurantId, {
+    let restaurant = await Restaurant.findByPk(req.params.restaurantId)
+    const orderBy = restaurant.sortByPrice?[[{model: Product, as: 'products'}, 'price', 'ASC']]
+    :[[{model: Product, as: 'products'}, 'order', 'ASC']]
+    restaurant = await Restaurant.findByPk(req.params.restaurantId, {
       attributes: { exclude: ['userId'] },
       include: [{
         model: Product,
@@ -69,7 +72,7 @@ exports.show = async function (req, res) {
         model: RestaurantCategory,
         as: 'restaurantCategory'
       }],
-      order: [[{ model: Product, as: 'products' }, 'order', 'ASC']]
+      order: orderBy
     }
     )
     res.json(restaurant)
@@ -108,3 +111,16 @@ exports.destroy = async function (req, res) {
     res.status(500).send(err)
   }
 }
+exports.toggleProductsSorting = async function (req, res){
+  try{
+    //PRIMERO BUSCAMOS TODOS LOS RESTAURANTES CON UN ID, PARA TENER LOS PRODUCTOS DE ESE RESTAURANTE
+    const restaurant = await Restaurant.findByPk(req.params.restaurantId)
+    //INVERTIMOS EL VALOR DE restaurant.sortByPrice, SI ERA FALSE SE VA A CONVERTIR EN TRUE Y VICEVERSA
+    restaurant.sortByPrice = !restaurant.sortByPrice
+    await restaurant.save()
+    res.json(restaurant)
+  }catch (err){
+    res.status(500).send(err)
+  }
+  }
+

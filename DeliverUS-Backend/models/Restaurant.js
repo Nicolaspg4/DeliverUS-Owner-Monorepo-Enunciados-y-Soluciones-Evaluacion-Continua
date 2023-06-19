@@ -50,6 +50,10 @@ module.exports = (sequelize, DataTypes) => {
         'temporarily closed'
       ]
     },
+    sortByPrice: {
+      type: sequelize.BOOLEAN,
+      defaultValue: false
+    },
     restaurantCategoryId: {
       allowNull: false,
       type: DataTypes.INTEGER
