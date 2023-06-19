@@ -152,7 +152,7 @@ export default function RestaurantsScreen ({ navigation, route }) {
       await fetchRestaurants()
       setRestaurantToBeDeleted(null)
       showMessage({
-        message: `Restaurant ${restaurant.name} succesfully removed`,
+        message: `Restaurant succesfully removed`,
         type: 'success',
         style: GlobalStyles.flashStyle,
         titleStyle: GlobalStyles.flashTextStyle
@@ -161,7 +161,7 @@ export default function RestaurantsScreen ({ navigation, route }) {
       console.log(error)
       setRestaurantToBeDeleted(null)
       showMessage({
-        message: `Restaurant ${restaurant.name} could not be removed.`,
+        message: `Restaurant could not be removed.`,
         type: 'error',
         style: GlobalStyles.flashStyle,
         titleStyle: GlobalStyles.flashTextStyle
@@ -174,7 +174,7 @@ export default function RestaurantsScreen ({ navigation, route }) {
       if (modifiedRestaurant) {
         await fetchRestaurants()
         showMessage({
-          message: `Restaurant ${restaurant.name} succesfully changed sorting method`,
+          message: `Restaurant succesfully changed sorting method`,
           type: 'success',
           style: GlobalStyles.flashStyle,
           titleStyle: GlobalStyles.flashTextStyle
@@ -182,7 +182,7 @@ export default function RestaurantsScreen ({ navigation, route }) {
       }
     } catch (error) {
       showMessage({
-        message: `There was an error while changing products order of the restaurant ${restaurant.name}. ${error.message}`,
+        message: `There was an error while changing products order of the restaurant`,
         type: 'error',
         style: GlobalStyles.flashStyle,
         titleStyle: GlobalStyles.flashTextStyle
